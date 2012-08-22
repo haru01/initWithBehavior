@@ -11,11 +11,23 @@
     * OCMockito
     * NLTHTTPStubServer
     * NLTQuickCheck
+* テスト対象のアプリケーション
+  * BrowseGithub
 * モデルのテスト
+  * アサーション
 * 複雑なモデルのテスト
+  * SyntaxHighlighter
+  * MarkDownParser
 * CoreDataのテスト
+  * メモリ上への配置
+  * MagicalRecode
 * 通信のテスト
+  * GithubApi
 * ViewControllerのテスト
+  * BrowseGithub
 * Viewのテスト
+  * GHVerifyView
 * アプリケーションテスト
+  * KIF
+  * UIAutomation + Jasmine
 
