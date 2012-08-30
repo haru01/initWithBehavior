@@ -6,6 +6,7 @@
   * Kiwi
   * Cedar
   * OCHarmcet
+  * テストフレームワークの対応表
   * サポートライブラリ
     * OCMock
     * OCMockito
@@ -13,11 +14,14 @@
     * NLTQuickCheck
 * テスト対象のアプリケーション
   * BrowseGithub
-* モデルのテスト
+* テストの基本
   * アサーション
+  * テストの為のスニペット
+    * モックを使ったテスト
+    * プライベートへのアクセス
+* モデルのテスト
 * 複雑なモデルのテスト
   * SyntaxHighlighter
-  * MarkDownParser
 * CoreDataのテスト
   * メモリ上への配置
   * MagicalRecode
@@ -30,4 +34,3 @@
 * アプリケーションテスト
   * KIF
   * UIAutomation + Jasmine
-
