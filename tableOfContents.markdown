@@ -16,28 +16,39 @@
   * BrowseGithub
 * テストの基本
   * アサーション
+    * 適当なモデル
   * テストの為のスニペット
     * モックを使ったテスト
+      * モック使いそうなところ
     * ブロックでのヘルパー関数定義
+      * BGEventをより簡潔に
     * プライベートへのアクセス
+      * なんかプライベート必要そうなやつ
+    * Cocoaの機能をテストし易くする
+      * すぐに抜けるとか、モックとか
 * モデルのテスト
+ここからBGResourceを軸にしたデータの表示
+  * BGResourceのテスト
+    * BGRepositoryのテスト
 * ロジックのテスト
+  * BGResourceManagerのテスト
+    * BGRepositoryManagerのテスト 
 * 通信のテスト
+  * BGResource/Repositoryのテスト
+  * BGResourceManager/RepositoryManagerのテスト
 * ViewとViewControllerのテスト
+  * BGRespositoryControllerのテスト
+  * BGRespositoryViewのテスト
+    * Viewのテストは書くべきか
 * アプリケーションロジックのテスト
+  * より大きな範囲で回すということ
+  * ViewController間の通信
+  * アプリケーションの遷移
 * 複雑なモデルのテスト
+  * BGSyntaxHighlighterのシンタックスハイライト
 * CoreDataのテスト
-* 複雑なモデルのテスト
-  * SyntaxHighlighter
-* CoreDataのテスト
-  * メモリ上への配置
-  * MagicalRecode
-* 通信のテスト
-  * GithubApi
-* ViewControllerのテスト
-  * BrowseGithub
-* Viewのテスト
-  * GHVerifyView
+  * BGRepositoryBookMarkのテスト
 * アプリケーションテスト
   * KIF
+  * Frunk
   * UIAutomation + Jasmine
