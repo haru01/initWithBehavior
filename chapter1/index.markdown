@@ -54,3 +54,85 @@ ${SRCROOT}/Kiwi/Kiwi
 <img src="../static/images/kiwi_add_library.png" />
 
 ## Kiwiを動作させてみる
+
+では、実際にKiwiで簡単なテストを記述してみましょう。
+Objective-Cでは基本的に ".h" と ".m" がセット作成されますが、Kiwiで記述する場合 ".m" のみを利用します。
+標準のテストファイル作成は ".h" と ".m" を作成してしまうので "Others > Empty" などから "ExampleSpec.m" というファイルを作成します。
+作成する際には、テストファイルが本番のアプリに混合しないよう、"Targets" が "プロジェクト名Tests" のみになっているかに気をつけてください。
+
+"ExampleSpec.m" 作成したら、まずはKiwiをインポートします。
+
+{% highlight objective-c %}
+#import "Kiwi.h"
+{% endhighlight %}
+
+次に、テストを記述するためのマクロを記述します。
+
+{% highlight objective-c %}
+SPEC_BEGIN(ExampleSpec)
+// この中に実際のテストを記述します
+SPEC_END
+{% endhighlight %}
+
+"SPEC_BEGIN" と "SPEC_EDN" は展開されると、SenTestingKitにあわせたクラス記述となります。
+この2つの間に実際のテストを記述します。
+
+テストは "describe" マクロの呼び出しによって表現されています。
+"describe" にはテストの主題を記述します、今回の場合は "Example" とします。
+
+{% highlight objective-c %}
+describe(@"Example", ^{
+});
+{% endhighlight %}
+
+そしてdescribeの中に、実際に実行可能なサンプルを記述します。
+サンプルの記述には "it" マクロを利用します。例えば1+1が2になる実行可能なサンプルを記述してみましょう。
+
+{% highlight objective-c %}
+describe(@"Example", ^{ 
+    it(@"1+1は2", ^{
+        NSInteger result = 1 + 1;
+        [[theValue(result) should] equal:2];
+    });
+});
+{% endhighlight %}
+
+このようになります。 "theValue" マクロはObjective-CのプリミティブなものをKiwi内で扱えるようにするためのマクロです。
+実際のテストでは、さらに "context" マクロを組み合わせ、以下のような記述をするケースが多くなります。
+"context" マクロは、実際にどのようなテストなのか、を表す為のものと思ってもらえればこのドキュメントを読む上では一旦大丈夫です。
+
+{% highlight objective-c %}
+describe(@"Example", ^{
+    
+    context(@"1+1をしたとき", ^{
+        __block NSIntger result;
+        
+        beforeEach(^{
+            result = 1 + 1;
+        });
+        
+        it(@"は、答えは2", ^{
+            [[theValue(result) should] equal:theValue(2)];
+        });
+    });
+
+});
+{% endhighlight %}
+
+新しく "beforeEach" というマクロも登場しました。これはそれが含まれるブロック内に存在しているテストそれぞれが実行される前に実行される処理です。
+また、同じブロック内に含まれているテストをすべて実行する前に一度だけ実行できるものとして "beforeAll" が、テストが終わったあとに実行されるものとして "afterEach" と "afterAll" がそれぞれ存在します。
+XUnit系のテストで言えば "before" は "setup"、 "after" は "tearDown"に相当します。これらのよく詳しい説明は、後々使いどころをあわせて説明していきます。
+
+Kiwiの基本的なテストの記述は以上となります。
+
+## この章のまとめ
+Kiwiのセットアップと、簡単なテストの書き方について説明しました。ポイントは以下です。
+
+* Command+U のショートカットでテストを実行する
+* Kiwiでは ".m" のファイルのみを利用する
+* ファイルを追加するターゲットに気をつける
+* Kiwiの基本的な記述方法
+  * describe : 主題
+  * context : テスト内容の説明
+  * it : 実際に実行可能なサンプル
+  
