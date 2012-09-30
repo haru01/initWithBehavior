@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+  <style>
+  
+  * {
+    color: #180008;
+  }
+    img {
+     max-height: 300px;
+    }
+    
+    article {
+      display: block;
+      margin: 10px auto;
+      width: 48em;
+
+    }
+    
+    code {
+      font-family: menlo;
+    }
+    
+    h1:first-letter,
+    h2:first-letter,
+    h3:first-letter {
+      font-size: 2em;
+      color: #ee0000;
+    }
+  </style>
+  </head>
+  <body>
+    <article>
+  	  <h1 id='bdd'>第一章:BDDに必要なものをそろえる</h1>
+
+<p>この章では、Kiwiの準備や動作確認、簡単なサンプルを使ったKiwiの記述スタイルを紹介します。 環境はMacOS10.8、Xcode4.5を想定しています。</p>
+
+<h2 id='id1'>新規プロジェクトの作成</h2>
+
+<p>KiwiはSenTestingKitの上で動作するテストフレームワークのため、まずはSenTestingKitを有効にしながらプロジェクトを作成します。 後からターゲットの追加も可能ですが、ここではそれは扱わないため、他のドキュメント等を参考にしてください。</p>
+
+<p>SenTestingKitでのテストを有効にする場合、プロジェクト作成時に &#8220;Include Unit Tests&#8221; へチェックを入れます。</p>
+<img src='../static/images/new_project.png' />
+<p>こうすることで、SenTestingKitを動作させる準備が整います。プロジェクトの情報を確認すると &#8220;プロジェクト名Tests&#8221; という名前でテスト用のターゲットが作成されているはずです。</p>
+<img src='../static/images/after_new_project.png' />
+<p>そして、「Command+U」でテストが実行されます。プロジェクト作成時にテストが一件作成されるので、それがきちんと動いているかを確認してください。 うまく動作すれば、次はKiwiの準備に入ります。</p>
+
+<h2 id='kiwi'>Kiwiの準備</h2>
+
+<p>Kiwiは公式ではgit-submoduleを使ってプロジェクトにコードを取り込んで利用することを推奨しています。 ここでは、その手順にそってKiwiをのセットアップを行います。 ただし、CocoaPodsに慣れている方は、CocoaPodsにKiwiが存在しますので、そちらを使うことをお勧めします。</p>
+
+<p>まず始めに、Kiwiをgit-submoduleでプロジェクトへ追加します。プロジェクトのルートへ移動した後に、</p>
+
+<p><code>
+$ git submodule add https://github.com/allending/Kiwi.git Kiwi
+</code></p>
+
+<p>というコマンドを実行し、Kiwiをローカルに追加します。 次にこのディレクトリをFinderなどで開き &#8220;Kiwi.xcodeproj&#8221; をプロジェクトへ追加し、ワークスペース化します。</p>
+<img src='../static/images/before_add_kiwi.png' /><img src='../static/images/after_add_kiwi.png' />
+<p>追加ができたら &#8220;プロジェクト名Tests&#8221; のターゲットの &#8220;User Header Search Path&#8221; へ</p>
+
+<p><code>
+${SRCROOT}/Kiwi/Kiwi
+</code></p>
+
+<p>を追加します。これで、テストのターゲットからKiwiのヘッダーを参照できるようになります。</p>
+<img src='../static/images/kiwi_header_search_path.png' />
+<p>最後に &#8220;Link Binary with Libraries&#8221; へ &#8220;libKiwi.a&#8221; を追加して、Kiwiの準備は終了です。</p>
+<img src='../static/images/kiwi_add_library.png' />
+<h2 id='kiwi'>Kiwiを動作させてみる</h2>
+
+<p>では、実際にKiwiで簡単なテストを記述してみましょう。 Objective-Cでは基本的に &#8220;.h&#8221; と &#8220;.m&#8221; がセット作成されますが、Kiwiで記述する場合 &#8220;.m&#8221; のみを利用します。 標準のテストファイル作成は &#8220;.h&#8221; と &#8220;.m&#8221; を作成してしまうので &#8220;Others &gt; Empty&#8221; などから &#8220;ExampleSpec.m&#8221; というファイルを作成します。 作成する際には、テストファイルが本番のアプリに混合しないよう、&#8221;Targets&#8221; が &#8220;プロジェクト名Tests&#8221; のみになっているかに気をつけてください。</p>
+
+<p>&#8220;ExampleSpec.m&#8221; 作成したら、まずはKiwiをインポートします。</p>
+<div>
+  <pre><code class='objective'>#import &quot;Kiwi.h&quot;</code></pre>
+</div>
+<p>次に、テストを記述するためのマクロを記述します。</p>
+<div>
+  <pre><code class='objective'>SPEC_BEGIN(ExampleSpec)
+// この中に実際のテストを記述します
+SPEC_END</code></pre>
+</div>
+<p>&#8220;SPEC_BEGIN&#8221; と &#8220;SPEC_EDN&#8221; は展開されると、SenTestingKitにあわせたクラス記述となります。 この2つの間に実際のテストを記述します。</p>
+
+<p>テストは &#8220;describe&#8221; マクロの呼び出しによって表現されています。 &#8220;describe&#8221; にはテストの主題を記述します、今回の場合は &#8220;Example&#8221; とします。</p>
+<div>
+  <pre><code class='objective'>describe(@&quot;Example&quot;, ^{
+});</code></pre>
+</div>
+<p>そしてdescribeの中に、実際に実行可能なサンプルを記述します。 サンプルの記述には &#8220;it&#8221; マクロを利用します。例えば1+1が2になる実行可能なサンプルを記述してみましょう。</p>
+<div>
+  <pre><code class='objective'>describe(@&quot;Example&quot;, ^{ 
+    it(@&quot;1+1は2&quot;, ^{
+        NSInteger result = 1 + 1;
+        [[theValue(result) should] equal:2];
+    });
+});</code></pre>
+</div>
+<p>このようになります。 &#8220;theValue&#8221; マクロはObjective-CのプリミティブなものをKiwi内で扱えるようにするためのマクロです。 実際のテストでは、さらに &#8220;context&#8221; マクロを組み合わせ、以下のような記述をするケースが多くなります。 &#8220;context&#8221; マクロは、実際にどのようなテストなのか、を表す為のものと思ってもらえればこのドキュメントを読む上では一旦大丈夫です。</p>
+<div>
+  <pre><code class='objective'>describe(@&quot;Example&quot;, ^{
+    
+    context(@&quot;1+1をしたとき&quot;, ^{
+        __block NSIntger result;
+        
+        beforeEach(^{
+            result = 1 + 1;
+        });
+        
+        it(@&quot;は、答えは2&quot;, ^{
+            [[theValue(result) should] equal:theValue(2)];
+        });
+    });
+
+});</code></pre>
+</div>
+<p>新しく &#8220;beforeEach&#8221; というマクロも登場しました。これはそれが含まれるブロック内に存在しているテストそれぞれが実行される前に実行される処理です。 また、同じブロック内に含まれているテストをすべて実行する前に一度だけ実行できるものとして &#8220;beforeAll&#8221; が、テストが終わったあとに実行されるものとして &#8220;afterEach&#8221; と &#8220;afterAll&#8221; がそれぞれ存在します。 XUnit系のテストで言えば &#8220;before&#8221; は &#8220;setup&#8221;、 &#8220;after&#8221; は &#8220;tearDown&#8221;に相当します。これらのよく詳しい説明は、後々使いどころをあわせて説明していきます。</p>
+
+<p>Kiwiの基本的なテストの記述は以上となります。</p>
+
+<h2 id='id2'>この章のまとめ</h2>
+
+<p>Kiwiのセットアップと、簡単なテストの書き方について説明しました。ポイントは以下です。</p>
+
+<ul>
+<li>
+<p>Command+U のショートカットでテストを実行する</p>
+</li>
+
+<li>
+<p>Kiwiでは &#8220;.m&#8221; のファイルのみを利用する * ファイルを追加するターゲットに気をつける</p>
+</li>
+
+<li>
+<p>Kiwiの基本的な記述方法</p>
+
+<ul>
+<li>describe : 主題</li>
+
+<li>context : テスト内容の説明</li>
+
+<li>it : 実際に実行可能なサンプル</li>
+</ul>
+</li>
+</ul>
+    </article>  
+  </body>
+</html>
