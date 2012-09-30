@@ -3,12 +3,36 @@
   <head>
     <meta charset="utf-8" />
   <style>
+  
+  * {
+    color: #180008;
+  }
     img {
      max-height: 300px;
+    }
+    
+    article {
+      display: block;
+      margin: 10px auto;
+      width: 48em;
+
+    }
+    
+    code {
+      font-family: menlo;
+    }
+    
+    h1:first-letter,
+    h2:first-letter,
+    h3:first-letter {
+      font-size: 2em;
+      color: #ee0000;
     }
   </style>
   </head>
   <body>
-    {{ content }}
+    <article>
+  	  {{ content }}
+    </article>  
   </body>
 </html>
